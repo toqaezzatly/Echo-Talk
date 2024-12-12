@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Chat App Landing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <style>
+          body { font-family: 'Poppins', sans-serif; }
+           :root {
+                 --primary-bg: #f2f9ff;  /* very light background */
+                 --secondary-bg: #eef5fa;  /* cards background */
+                --accent-bg: #798fef; /* primary color */
+                --light-accent:#b3bdf4; /* light primary */
+                 --dark-bg: #1a202c; /* dark text */
+                  --gradient-start: rgba(121, 143, 239, 0.1); /* Gradient start */
+                --gradient-end: rgba(121, 143, 239, 0.3);  /* Gradient end */
+           }
+          .fade-in {
+               animation: fadeIn 1.5s ease-out;
+           }
+          @keyframes fadeIn {
+                from {
+                     opacity: 0;
+                      transform: translateY(30px);
+                }
+                to {
+                       opacity: 1;
+                    transform: translateY(0);
+                 }
+          }
+        .card {
+           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+         }
+         .button-primary {
+             background-color: var(--accent-bg);
+             color: white;
+             transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button-primary:hover {
+             background-color: #6a7dd8;
+              transform: scale(1.05);
+         }
+      .feature-card {
+           transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+         }
+      .feature-card:hover {
+             transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+       }
+      .gradient-bg{
+            background: linear-gradient(135deg, var(--gradient-start) , var(--gradient-end) )
+         }
+     </style>
+</head>
+<body class="bg-[--primary-bg] text-[--dark-bg]">
+    <!-- Navigation Bar -->
+     <nav class="bg-[--secondary-bg] p-6 shadow-md fade-in">
+          <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold text-[--accent-bg] flex items-center"><i class="fas fa-comment-dots text-[--accent-bg] mr-2"></i>Echo Chat</a>
+               <ul class="flex space-x-8 text-xl">
+                   <li><a href="#" class="text-gray-700 hover:text-[--accent-bg] transition-colors duration-200">Home</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-[--accent-bg] transition-colors duration-200">About</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-[--accent-bg] transition-colors duration-200">Login</a></li>
+              </ul>
+           </div>
+    </nav>
+
+    <!-- Hero Section -->
+   <section class="container mx-auto p-8 mt-16 text-center fade-in">
+         <h1 class="text-6xl font-bold text-[--dark-bg] mb-8 tracking-wide">
+              Connect and communicate in real-time.
+         </h1>
+        <p class="text-2xl text-gray-600 mb-12">
+            Experience a seamless and efficient way to connect with others.
+         </p>
+          <button class="button-primary py-4 px-8 rounded-full font-medium text-xl flex items-center justify-center mx-auto">
+                <i class="fas fa-rocket mr-2"></i>Get Started
+            </button>
+  </section>
+     <!-- Features Section -->
+   <section class="container mx-auto p-8 mt-16 fade-in">
+        <h2 class="text-5xl font-bold text-center mb-12">Our Core Features</h2>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8">
+              <!-- Feature 1 -->
+                <div class="bg-white p-8 rounded-lg shadow feature-card gradient-bg">
+                     <h3 class="text-3xl font-semibold text-[--accent-bg] mb-6">
+                         <i class="fas fa-bolt mr-2"></i>Instant Messaging
+                      </h3>
+                        <p class="text-gray-700 text-xl">Send and receive messages in real-time with our lightning-fast chat technology.</p>
+                </div>
+               <!-- Feature 2 -->
+               <div class="bg-white p-8 rounded-lg shadow feature-card gradient-bg">
+                    <h3 class="text-3xl font-semibold text-[--accent-bg] mb-6">
+                        <i class="fas fa-user-shield mr-2"></i>Secure Authentication
+                    </h3>
+                     <p class="text-gray-700 text-xl">Protect your conversations with our advanced JWT-based secure authentication system.</p>
+                 </div>
+                <!-- Feature 3 -->
+               <div class="bg-white p-8 rounded-lg shadow feature-card gradient-bg">
+                    <h3 class="text-3xl font-semibold text-[--accent-bg] mb-6">
+                         <i class="fas fa-signal mr-2"></i>Real-Time Presence
+                     </h3>
+                     <p class="text-gray-700 text-xl">See who is online and start a chat instantly with our real-time presence indicator.</p>
+                 </div>
+                <!-- Feature 4 -->
+              <div class="bg-white p-8 rounded-lg shadow feature-card gradient-bg">
+                   <h3 class="text-3xl font-semibold text-[--accent-bg] mb-6">
+                        <i class="fas fa-phone-alt mr-2"></i>Voice and Video Calls
+                     </h3>
+                   <p class="text-gray-700 text-xl">Enjoy high-quality voice and video calls with your contacts with just a simple touch.</p>
+                </div>
+              <!-- Feature 5 -->
+               <div class="bg-white p-8 rounded-lg shadow feature-card gradient-bg">
+                    <h3 class="text-3xl font-semibold text-[--accent-bg] mb-6">
+                       <i class="fas fa-lock mr-2"></i>End-to-End Encryption
+                     </h3>
+                    <p class="text-gray-700 text-xl">Experience true privacy with end-to-end encryption for all your messages.</p>
+                </div>
+                <!-- Feature 6 -->
+              <div class="bg-white p-8 rounded-lg shadow feature-card gradient-bg">
+                    <h3 class="text-3xl font-semibold text-[--accent-bg] mb-6">
+                        <i class="fas fa-globe mr-2"></i>Multi-Language Support
+                     </h3>
+                   <p class="text-gray-700 text-xl">Communicate with anyone anywhere using multi-language support.</p>
+               </div>
+           </div>
+    </section>
+    <!-- Testimonial Section -->
+    <section class="container mx-auto p-8 mt-16 text-center fade-in">
+        <h2 class="text-5xl font-bold text-center mb-12">What Our Users Love</h2>
+       <div class="bg-[--secondary-bg] rounded-lg p-12">
+           <p class="text-2xl text-gray-700 italic mb-6">
+               "This chat app is incredible! The simplicity and speed of messages made my life easy!"
+          </p>
+         <p class="text-xl text-gray-600 font-medium">- Jessica M., Student</p>
+        </div>
+   </section>
+
+     <!-- Call to Action -->
+    <section class="container mx-auto p-8 mt-16 text-center fade-in">
+         <h2 class="text-5xl font-bold text-center mb-12">Ready to Experience?</h2>
+           <button class="button-primary py-5 px-10 rounded-full text-2xl font-medium">
+              <i class="fas fa-rocket mr-2"></i>start chatting
+           </button>
+    </section>
+
+     <!-- Footer -->
+    <footer class="text-center mt-20 fade-in">
+         <p class="text-gray-500 text-lg">
+           © 2024 Echo Chat App. All rights reserved.
+         </p>
+    </footer>
+</body>
+</html>
