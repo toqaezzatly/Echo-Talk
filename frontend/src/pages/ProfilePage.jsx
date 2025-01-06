@@ -11,16 +11,16 @@ const ProfilePage = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
+  
     const reader = new FileReader();
-
     reader.readAsDataURL(file);
-
+  
     reader.onload = async () => {
       try {
         const base64Image = reader.result;
         setSelectedImg(base64Image);
-        await updateProfile({ profilePicture: base64Image });
+          // send the base64 string directly under the profilePic key
+       await updateProfile({ profilePic: base64Image });
         setError(null);
       } catch (err) {
         console.error("Error updating profile:", err);
@@ -28,7 +28,7 @@ const ProfilePage = () => {
       }
     };
   };
-
+ 
   if (!authUser) {
     return <div className="text-center mt-20">Loading profile...</div>;
   }
@@ -46,11 +46,11 @@ const ProfilePage = () => {
           {/* Avatar upload section */}
           <div className="flex flex-col items-center gap-4">
             <div className="relative">
-              <img
+            <img
                 src={selectedImg || authUser.profilePic || "/avatar.png"}
                 alt="Profile"
                 className="w-32 h-32 rounded-full object-cover border-4"
-              />
+            />
               <label
                 htmlFor="avatar-upload"
                 className={`absolute bottom-0 right-0 bg-base-content hover:scale-105 p-2 rounded-full cursor-pointer transition-all duration-200 ${

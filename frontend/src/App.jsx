@@ -6,13 +6,14 @@ import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
 import SettingsPage from './pages/SettingsPage';
 import ProfilePage from './pages/ProfilePage';
-import axiosInstance from './lib/axios';
 import { useAuthStore } from './store/useAuthStore';
+import useThemeStore from './store/useThemeStore';
 import { Loader } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { theme} = useThemeStore();
 
   useEffect(() => {
     console.log("useEffect in App.jsx called");
@@ -30,7 +31,7 @@ const App = () => {
   
 
   return (
-    <div data-theme="dark">
+    <div data-theme= {theme}>
       <Toaster />
       <Navbar />
       <Routes>

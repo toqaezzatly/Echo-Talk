@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import axiosInstance from '../lib/axios.js';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 export const useAuthStore = create((set) => ({
   authUser: null,
@@ -59,17 +60,24 @@ export const useAuthStore = create((set) => ({
     }
   },
 
+
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
-       const response = await axiosInstance.put('/api/auth/update-profile', data);
-       set({ authUser: response.data});
-         toast.success('Profile updated successfully');
-    } catch (error) {
-        console.log("Error updating profile", error);
-        toast.error(error.response.data.message);
-     } finally {
-        set({ isUpdatingProfile: false });
-      }
-   },
-}));
+      const jwt = Cookies.get("jwt");
+      console.log("jwt: ", jwt);
+      console.log("Data being sent to updateProfile endpoint: ", data) // log the data before sending it
+      const response = await axiosInstance.put('/api/auth/update-profile', data, {headers: {Authorization: `Bearer ${jwt}`}});
+      console.log("Full response from updateProfile: ", response)
+      console.log("Response Data:", response.data);
+      set({ authUser: response.data});
+      toast.success('Profile updated successfully');
+   } catch (error) {
+      console.log("Error updating profile:", error);
+      console.log("Full error response:", error.response) // log the full response
+      toast.error(error.response.data?.message || "Error updating profile");
+   } finally {
+      set({ isUpdatingProfile: false });
+   }
+},
+  }));
