@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axiosInstance from '../lib/axios.js'; // Make sure the path is correct
+import axiosInstance from '../lib/axios.js';
 import toast from 'react-hot-toast';
 
 export const useAuthStore = create((set) => ({
@@ -8,20 +8,20 @@ export const useAuthStore = create((set) => ({
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true,
-
   checkAuth: async () => {
+    console.log("checkAuth called");
     try {
-      const response = await axiosInstance.get('/api/auth/check'); // Make sure this matches the backend route
-
-      // Assuming response.data contains the authenticated user
+      const response = await axiosInstance.get('/api/auth/check');
+      console.log("Auth Check Response:", response.data);
       set({ authUser: response.data });
     } catch (error) {
-      console.log("Error checking auth", error);
+      console.error("Auth Check Error:", error);
+      set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
   },
-
+  
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
@@ -29,29 +29,24 @@ export const useAuthStore = create((set) => ({
       set({ authUser: res.data });
       toast.success('Signed up successfully');
     } catch (error) {
-      toast.error(error.response.data.message); // Fixed typo here
+      toast.error(error.response.data.message);
     } finally {
       set({ isSigningUp: false });
     }
   },
 
-
   login: async (data) => {
-
+      set({isLoggingIn: true})
    try{ const res = await axiosInstance.post('/api/auth/login', data);
-
     set({ authUser: res.data });
     toast.success('Logged in successfully');
 } catch (error) {
-    toast.success("Logged in successfully");
+    toast.error(error.response.data.message);
 
 } finally{
     set({isLoggingIn: false});
 }
-
-
   },
-
 
   logout: async () => {
     try {
@@ -64,6 +59,17 @@ export const useAuthStore = create((set) => ({
     }
   },
 
-
-
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+       const response = await axiosInstance.put('/api/auth/update-profile', data);
+       set({ authUser: response.data});
+         toast.success('Profile updated successfully');
+    } catch (error) {
+        console.log("Error updating profile", error);
+        toast.error(error.response.data.message);
+     } finally {
+        set({ isUpdatingProfile: false });
+      }
+   },
 }));
