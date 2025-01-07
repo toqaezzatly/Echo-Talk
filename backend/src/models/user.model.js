@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-
     fullName: {
         type: String,
         required: true,
@@ -17,10 +16,10 @@ const userSchema = new mongoose.Schema({
         minLength: 12,
         maxLength: 64,
     },
-    profilePicture: {
+    profilePic: {
         type: String,
-    },}
-    , {
+         //Removed the default value from the schema
+    }}, {
     timestamps: true,
 });
 

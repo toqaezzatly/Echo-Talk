@@ -8,15 +8,11 @@ const router = express.Router();
 
 router.post("/signup", signup);
 
-router.get("/login", (req, res) => {
-    res.send("login")
-}).post("/login", login);
+router.post("/login", login);
 
-router.get("/logout", (req, res) => {
-    res.send("logout")
-}).post("/logout", logout);
+router.post("/logout", logout);
 
-router.put("/update-profile",protectRoute, updateProfile);
+router.put("/update-profile", protectRoute, updateProfile);
 
 router.get("/check",protectRoute, checkAuth);
 
