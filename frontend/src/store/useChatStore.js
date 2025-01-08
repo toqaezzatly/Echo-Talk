@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
-import axiosInstance from "../lib/axios";
-import { io } from "socket.io-client";
+import  axiosInstance  from "../lib/axios";
+import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -9,20 +9,6 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
-  socket: null,
-  unsubscribeMessages: null,
-
-
-  initializeSocket: (userId) => {
-    const socket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {
-      query: {
-        userId: userId,
-      },
-      autoConnect: true, // set to false if you want to control when the connection is established
-    });
-
-    set({ socket });
-  },
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -47,7 +33,6 @@ export const useChatStore = create((set, get) => ({
       set({ isMessagesLoading: false });
     }
   },
-
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
@@ -58,37 +43,26 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-
-
-
   subscribeToMessages: () => {
-    const { socket, selectedUser, setMessages } = get();
+    const { selectedUser } = get();
+    if (!selectedUser) return;
 
-    if (!socket || !selectedUser) return;
-    // Store the function that unsubscribes from the event.
-    const unsubscribeFn = socket.on("newMessage", (newMessage) => {
-        const isMessageRelatedToSelectedUser =
-            newMessage.senderId === selectedUser._id ||
-            newMessage.receiverId === selectedUser._id;
-        if (!isMessageRelatedToSelectedUser) return;
-        setMessages((prev) => [...prev, newMessage]);
+    const socket = useAuthStore.getState().socket;
+
+    socket.on("newMessage", (newMessage) => {
+      const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
+      if (!isMessageSentFromSelectedUser) return;
+
+      set({
+        messages: [...get().messages, newMessage],
+      });
     });
-
-
-    set({ unsubscribeMessages: unsubscribeFn})
   },
 
-
-  
   unsubscribeFromMessages: () => {
-        const { socket, unsubscribeMessages} = get();
-
-
-        if (socket && unsubscribeMessages && typeof unsubscribeMessages === 'function') {
-            unsubscribeMessages();
-            set({ unsubscribeMessages: null})
-        }
-    },
+    const socket = useAuthStore.getState().socket;
+    socket.off("newMessage");
+  },
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
