@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; font-size: 1.1rem; }
         /* Applying colorhunt palette */
         :root {
             --primary-bg: #f2f9ff;
@@ -20,218 +20,276 @@
             --glossy-shadow: rgba(0, 0, 0, 0.06);
             --glossy-light: rgba(255, 255, 255, 0.2);
         }
-        /* Initial Card Animation */
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out;
-             opacity: 0;
-            animation-fill-mode: forwards;
+        /* Slide-in Animation */
+        .slide-in {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: transform 0.6s ease, opacity 0.6s ease;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .slide-in.active {
+             opacity: 1;
+            transform: translateX(0);
         }
         .glossy-card {
-             background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(0,0,0,0.05));
-             box-shadow:  10px 10px 20px var(--glossy-shadow) ,
-                        -10px -10px 20px var(--glossy-light);
-            transition: opacity 0.3s ease;
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(0,0,0,0.05));
+            box-shadow: 12px 12px 25px var(--glossy-shadow) , -12px -12px 25px var(--glossy-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
         }
-
-
+        .glossy-card:hover,
+        .glossy-card:focus {
+            transform: scale(1.04);
+            box-shadow: 15px 15px 30px var(--glossy-shadow), -15px -15px 30px var(--glossy-light);
+            opacity: 1;
+        }
+         /* Section Heading Animation */
+        .section-heading {
+           position: relative;
+            display: inline-block;
+             padding-bottom: 5px;
+        }
+        .section-heading::after{
+             content: '';
+            position: absolute;
+             left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-bg);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .section-heading:hover::after{
+             transform: scaleX(1);
+        }
+        .list-item{
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .list-item:hover{
+           transform: translateX(5px);
+           opacity: 0.8;
+        }
+        /* Add a small scale animation to the user profile icons */
+         .team-member-icon{
+             transition: transform 0.3s ease;
+         }
+         .team-member-icon:hover{
+             transform: scale(1.2);
+         }
+         .container {
+           max-width: 1200px;
+        }
     </style>
 </head>
 <body class="bg-[--primary-bg]">
     <div class="container mx-auto p-8">
 
         <!-- Project Title and Overview -->
-        <header class="text-center mb-12 animate-fade-in">
-            <h1 class="text-4xl font-bold text-[--accent-bg] mb-4">Echo Talk Project</h1>
-            <h2 class="text-xl text-gray-700 mb-6">Alx Scholarship Project</h2>
-            <p class="text-gray-600">A chat application built to enhance real-time communication skills.</p>
+        <header class="text-center mb-12 slide-in">
+            <h1 class="text-5xl font-bold text-[--accent-bg] mb-6">Echo Talk Project</h1>
+             <h2 class="text-2xl text-gray-700 mb-8">Alx Scholarship Project</h2>
+            <p class="text-lg text-gray-600">A chat application built to enhance real-time communication skills.</p>
         </header>
 
-          <!-- Mission Project Section -->
-       <section class="bg-[--secondary-bg] rounded-lg p-8 mb-8 animate-fade-in glossy-card" data-animation="card">
-            <h2 class="text-2xl text-center font-semibold text-gray-800 mb-4"><i class="fas fa-rocket text-[--accent-bg] mr-2"></i>Project Mission</h2>
-            <p class="text-center text-gray-700">To build a real-time chat application.</p>
+        <!-- Mission Project Section -->
+        <section class="bg-[--secondary-bg] rounded-lg p-10 mb-10 glossy-card slide-in" data-animation="card">
+             <h2 class="text-3xl text-center font-semibold text-gray-800 mb-6 section-heading"><i class="fas fa-rocket text-[--accent-bg] mr-2"></i>Project Mission</h2>
+            <p class="text-lg text-center text-gray-700">To build a real-time chat application.</p>
         </section>
 
-          <!--Team Members Section-->
-        <section class="bg-[--highlight-bg] rounded-lg p-8 mb-8 animate-fade-in glossy-card" data-animation="card">
-             <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+        <!--Team Members Section-->
+        <section class="bg-[--highlight-bg] rounded-lg p-10 mb-10 glossy-card slide-in" data-animation="card">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-8 section-heading">
                 <i class="fas fa-users text-[--accent-bg] mr-2"></i> The Team Members</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-               <!--Sara Alsayd -->
-               <div class="text-center">
-                    <h3 class="text-lg font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1"></i>Sara alsayd</h3>
-                    <p class="text-gray-600 text-sm">Front end developer</p>
-               </div>
-               <!-- Toka Ayman-->
-               <div class="text-center">
-                    <h3 class="text-lg font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1"></i>Toka Ayman</h3>
-                    <p class="text-gray-600 text-sm">Team leader <br>  Backend developer</p>
-                </div>
-               <!--Hader Abdelhakem-->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!--Sara Alsayd -->
                 <div class="text-center">
-                   <h3 class="text-lg font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1"></i>Hader Abdelhakem</h3>
-                   <p class="text-gray-600 text-sm"> Backend developer</p>
+                     <h3 class="text-xl font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1 team-member-icon"></i>Sara alsayd</h3>
+                    <p class="text-lg text-gray-600">Front end developer</p>
                 </div>
-               <!--Hebe Mamdooh-->
-               <div class="text-center">
-                   <h3 class="text-lg font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1"></i>Heba Mamdooh</h3>
-                   <p class="text-gray-600 text-sm"> Backend developer</p>
-               </div>
-           </div>
+                <!-- Toka Ayman-->
+                <div class="text-center">
+                    <h3 class="text-xl font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1 team-member-icon"></i>Toka Ayman</h3>
+                    <p class="text-lg text-gray-600">Team leader <br>  Backend developer</p>
+                 </div>
+                <!--Hader Abdelhakem-->
+                <div class="text-center">
+                    <h3 class="text-xl font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1 team-member-icon"></i>Hader Abdelhakem</h3>
+                    <p class="text-lg text-gray-600"> Backend developer</p>
+                </div>
+                <!--Hebe Mamdooh-->
+                <div class="text-center">
+                    <h3 class="text-xl font-medium text-[--accent-bg]"><i class="fas fa-user-circle text-[--accent-bg] mr-1 team-member-icon"></i>Heba Mamdooh</h3>
+                    <p class="text-lg text-gray-600"> Backend developer</p>
+                </div>
+            </div>
         </section>
 
         <!-- Project Description -->
-       <section class="bg-white rounded-lg p-8 mb-8 shadow animate-fade-in glossy-card" data-animation="card">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6"><i class="fas fa-info-circle text-[--accent-bg] mr-2"></i>Project Description</h2>
-            <p class="text-gray-700">
+        <section class="bg-white rounded-lg p-10 mb-10 shadow glossy-card slide-in" data-animation="card">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-8 section-heading"><i class="fas fa-info-circle text-[--accent-bg] mr-2"></i>Project Description</h2>
+            <p class="text-lg text-gray-700">
                 The Echo Chat application allows users to message instantly, view online status, and experience secure communication. It's designed to be a fast and responsive platform.
             </p>
         </section>
 
          <!-- Core Features Section -->
-        <section class="bg-[--secondary-bg] rounded-lg p-8 mb-8 animate-fade-in glossy-card" data-animation="card">
-             <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+        <section class="bg-[--secondary-bg] rounded-lg p-10 mb-10 glossy-card slide-in" data-animation="card">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-8 section-heading">
                 <i class="fas fa-cogs text-[--accent-bg] mr-2"></i>Core Features</h2>
             <ul class="list-disc list-inside text-gray-700">
-                 <li><i class="fas fa-comment-dots text-[--accent-bg] mr-2"></i>Real-time messaging using <span class="font-semibold text-[--accent-bg]">Socket.io</span>.</li>
-                <li><i class="fas fa-shield-alt text-[--accent-bg] mr-2"></i>Authentication and authorization with <span class="font-semibold text-[--accent-bg]">JWT</span>.</li>
-                <li><i class="fas fa-signal text-[--accent-bg] mr-2"></i>Online user status tracking.</li>
-                 <li><i class="fas fa-palette text-[--accent-bg] mr-2"></i>User-friendly interface styled with <span class="font-semibold text-[--accent-bg]">TailwindCSS</span> and <span class="font-semibold text-[--accent-bg]">DaisyUI</span>.</li>
+                 <li class="list-item text-lg"><i class="fas fa-comment-dots text-[--accent-bg] mr-2"></i>Real-time messaging using <span class="font-semibold text-[--accent-bg]">Socket.io</span>.</li>
+                <li class="list-item text-lg"><i class="fas fa-shield-alt text-[--accent-bg] mr-2"></i>Authentication and authorization with <span class="font-semibold text-[--accent-bg]">JWT</span>.</li>
+                <li class="list-item text-lg"><i class="fas fa-signal text-[--accent-bg] mr-2"></i>Online user status tracking.</li>
+                <li class="list-item text-lg"><i class="fas fa-palette text-[--accent-bg] mr-2"></i>User-friendly interface styled with <span class="font-semibold text-[--accent-bg]">TailwindCSS</span> and <span class="font-semibold text-[--accent-bg]">DaisyUI</span>.</li>
             </ul>
         </section>
 
        <!-- Technologies Used Section -->
-        <section class="bg-white rounded-lg p-8 mb-8 shadow animate-fade-in glossy-card" data-animation="card">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6"><i class="fas fa-laptop-code text-[--accent-bg] mr-2"></i>Technologies Used</h2>
-             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <section class="bg-white rounded-lg p-10 mb-10 shadow glossy-card slide-in" data-animation="card">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-8 section-heading"><i class="fas fa-laptop-code text-[--accent-bg] mr-2"></i>Technologies Used</h2>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-lg font-semibold text-[--accent-bg]"><i class="fab fa-react text-[--accent-bg] mr-1"></i>Frontend:</h3>
-                   <p class="text-gray-700"> <span class="font-semibold text-[--accent-bg]">React.js</span></p>
-                </div>
-                 <div>
-                    <h3 class="text-lg font-semibold text-[--accent-bg]"><i class="fab fa-node-js text-[--accent-bg] mr-1"></i>Backend:</h3>
-                    <p class="text-gray-700"><span class="font-semibold text-[--accent-bg]">Node.js</span>, <span class="font-semibold text-[--accent-bg]">Express.js</span></p>
+                    <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fab fa-react text-[--accent-bg] mr-1"></i>Frontend:</h3>
+                    <p class="text-lg text-gray-700"> <span class="font-semibold text-[--accent-bg]">React.js</span></p>
+                     <p class="text-lg text-gray-700"> <span class="font-semibold text-[--accent-bg]">Vite</span></p>
+                    <p class="text-lg text-gray-700"> <span class="font-semibold text-[--accent-bg]">React Router DOM</span></p>
+                     <p class="text-lg text-gray-700"> <span class="font-semibold text-[--accent-bg]">Lucide-react</span></p>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-[--accent-bg]"><i class="fas fa-database text-[--accent-bg] mr-1"></i>Database:</h3>
-                    <p class="text-gray-700"><span class="font-semibold text-[--accent-bg]">MongoDB</span></p>
+                    <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fab fa-node-js text-[--accent-bg] mr-1"></i>Backend:</h3>
+                     <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">Node.js</span>, <span class="font-semibold text-[--accent-bg]">Express.js</span></p>
+                      <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">body-parser</span>, <span class="font-semibold text-[--accent-bg]">cors</span>, <span class="font-semibold text-[--accent-bg]">cookie-parser</span></p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fas fa-database text-[--accent-bg] mr-1"></i>Database:</h3>
+                    <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">MongoDB</span></p>
+                     <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">Mongoose</span></p>
                 </div>
             </div>
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                   <h3 class="text-lg font-semibold text-[--accent-bg]"><i class="fas fa-exchange-alt text-[--accent-bg] mr-1"></i>Real-Time Communication:</h3>
-                    <p class="text-gray-700"><span class="font-semibold text-[--accent-bg]">Socket.io</span></p>
+                    <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fas fa-exchange-alt text-[--accent-bg] mr-1"></i>Real-Time Communication:</h3>
+                    <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">Socket.io</span></p>
                 </div>
                 <div>
-                     <h3 class="text-lg font-semibold text-[--accent-bg]"><i class="fas fa-desktop text-[--accent-bg] mr-1"></i>UI Framework:</h3>
-                    <p class="text-gray-700"><span class="font-semibold text-[--accent-bg]">TailwindCSS</span> and <span class="font-semibold text-[--accent-bg]">DaisyUI</span></p>
+                     <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fas fa-desktop text-[--accent-bg] mr-1"></i>UI Framework:</h3>
+                    <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">TailwindCSS</span> and <span class="font-semibold text-[--accent-bg]">DaisyUI</span></p>
+                </div>
+                <div>
+                     <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fas fa-user-shield text-[--accent-bg] mr-1"></i>Authentication</h3>
+                      <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">bcryptjs</span>, <span class="font-semibold text-[--accent-bg]">jsonwebtoken</span></p>
+                </div>
+                 <div>
+                     <h3 class="text-xl font-semibold text-[--accent-bg]"><i class="fas fa-cog text-[--accent-bg] mr-1"></i>State Management:</h3>
+                    <p class="text-lg text-gray-700"><span class="font-semibold text-[--accent-bg]">Zustand</span></p>
                 </div>
             </div>
         </section>
 
          <!-- Third-Party Services Section -->
-         <section class="bg-[--highlight-bg] rounded-lg p-8 mb-8 animate-fade-in glossy-card" data-animation="card">
-             <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
-               <i class="fas fa-plug text-[--accent-bg] mr-2"></i>Third-Party Services</h2>
-            <div class="flex justify-around items-center">
-                <div>
-                    <h3 class="text-lg font-semibold text-[--accent-bg] mb-2"><i class="fas fa-key text-[--accent-bg] mr-1"></i>1- JWT</h3>
-                     <p class="text-gray-700">For secure token-based authentication.</p>
-                </div>
+         <section class="bg-[--highlight-bg] rounded-lg p-10 mb-10 glossy-card slide-in" data-animation="card">
+           <h2 class="text-3xl font-semibold text-center text-gray-800 mb-8 section-heading">
+                <i class="fas fa-plug text-[--accent-bg] mr-2"></i>Third-Party Services</h2>
+             <div class="flex justify-around items-center">
                  <div>
-                     <h3 class="text-lg font-semibold text-[--accent-bg] mb-2"><i class="fas fa-cloud text-[--accent-bg] mr-1"></i>2- MongoDB Atlas</h3>
-                     <p class="text-gray-700">Cloud-based database hosting.</p>
+                     <h3 class="text-xl font-semibold text-[--accent-bg] mb-4"><i class="fas fa-key text-[--accent-bg] mr-1"></i>1- JWT</h3>
+                      <p class="text-lg text-gray-700">For secure token-based authentication.</p>
                  </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-[--accent-bg] mb-2"><i class="fas fa-network-wired text-[--accent-bg] mr-1"></i>3- Socket.io</h3>
-                    <p class="text-gray-700">Real-time bidirectional communication.</p>
-               </div>
+                 <div>
+                      <h3 class="text-xl font-semibold text-[--accent-bg] mb-4"><i class="fas fa-cloud text-[--accent-bg] mr-1"></i>2- MongoDB Atlas</h3>
+                      <p class="text-lg text-gray-700">Cloud-based database hosting.</p>
+                  </div>
+                 <div>
+                    <h3 class="text-xl font-semibold text-[--accent-bg] mb-4"><i class="fas fa-network-wired text-[--accent-bg] mr-1"></i>3- Socket.io</h3>
+                     <p class="text-lg text-gray-700">Real-time bidirectional communication.</p>
+                </div>
             </div>
+        </section>
+        <!-- Other APIs/Libraries/Services Section -->
+        <section class="bg-white rounded-lg p-10 mb-10 shadow glossy-card slide-in" data-animation="card">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-8 section-heading"><i class="fas fa-tools text-[--accent-bg] mr-2"></i>Other APIs/Libraries/Services</h2>
+              <div class="flex flex-wrap justify-around">
+                 <div class="w-full md:w-1/2 lg:w-1/4 px-4 mb-4">
+                    <h3 class="text-xl font-semibold text-[--accent-bg] mb-2"><i class="fas fa-code text-[--accent-bg] mr-1"></i>Cloudaire</h3>
+                     <p class="text-lg text-gray-700">For image hosting.</p>
+                 </div>
+               <div class="w-full md:w-1/2 lg:w-1/4 px-4 mb-4">
+                    <h3 class="text-xl font-semibold text-[--accent-bg] mb-2"><i class="fas fa-cookie text-[--accent-bg] mr-1"></i>js-cookie</h3>
+                   <p class="text-lg text-gray-700">Handle cookies.</p>
+                 </div>
+                   <div class="w-full md:w-1/2 lg:w-1/4 px-4 mb-4">
+                   <h3 class="text-xl font-semibold text-[--accent-bg] mb-2"><i class="fas fa-bell text-[--accent-bg] mr-1"></i>react-hot-toast</h3>
+                     <p class="text-lg text-gray-700">Toast notifications.</p>
+                  </div>
+                  <div class="w-full md:w-1/2 lg:w-1/4 px-4 mb-4">
+                    <h3 class="text-xl font-semibold text-[--accent-bg] mb-2"><i class="fas fa-globe text-[--accent-bg] mr-1"></i>Axios</h3>
+                      <p class="text-lg text-gray-700">For making HTTP requests.</p>
+                 </div>
+             </div>
         </section>
 
         <!-- Challenges Section -->
-        <section class="bg-white rounded-lg p-8 mb-8 shadow animate-fade-in glossy-card" data-animation="card">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6"><i class="fas fa-exclamation-triangle text-[--accent-bg] mr-2"></i>Challenges Already Identified</h2>
-            <ul class="list-disc list-inside text-gray-700">
-                <li>
+        <section class="bg-white rounded-lg p-10 mb-10 shadow glossy-card slide-in" data-animation="card">
+           <h2 class="text-3xl font-semibold text-gray-800 mb-8 section-heading"><i class="fas fa-exclamation-triangle text-[--accent-bg] mr-2"></i>Challenges Already Identified</h2>
+             <ul class="list-disc list-inside text-gray-700">
+                <li class="list-item text-lg">
                      <span class="font-semibold text-[--accent-bg]"><i class="fas fa-bolt text-[--accent-bg] mr-1"></i>Real-Time Updates:</span> Ensuring low latency and smooth performance during messaging.
                  </li>
-                 <li>
+                <li class="list-item text-lg">
                      <span class="font-semibold text-[--accent-bg]"><i class="fas fa-user-lock text-[--accent-bg] mr-1"></i>User Authentication:</span> Safeguarding user data with JWT while preventing token misuse.
-                </li>
-               <li>
+                 </li>
+                <li class="list-item text-lg">
                      <span class="font-semibold text-[--accent-bg]"><i class="fas fa-tasks text-[--accent-bg] mr-1"></i>State Management:</span> Optimizing performance when handling real-time global states.
                 </li>
-                <li>
+                <li class="list-item text-lg">
                     <span class="font-semibold text-[--accent-bg]"><i class="fas fa-bug text-[--accent-bg] mr-1"></i>Error Handling:</span> Managing errors effectively on both the client and server sides.
                </li>
            </ul>
         </section>
 
          <!-- Learning Objectives Section -->
-        <section class="bg-[--secondary-bg] rounded-lg p-8 mb-8 animate-fade-in glossy-card" data-animation="card">
-            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+        <section class="bg-[--secondary-bg] rounded-lg p-10 mb-10 glossy-card slide-in" data-animation="card">
+           <h2 class="text-3xl font-semibold text-center text-gray-800 mb-8 section-heading">
                 <i class="fas fa-graduation-cap text-[--accent-bg] mr-2"></i>Learning Objectives</h2>
-            <ul class="list-disc list-inside text-gray-700">
-                <li>Understand and implement <span class="font-semibold text-[--accent-bg]">real-time communication</span> using Socket.io.</li>
-                <li>Learn how to <span class="font-semibold text-[--accent-bg]">secure applications</span> with JWT-based authentication.</li>
-                 <li>Build scalable apps using the MERN stack.</li>
-                 <li>Explore effective <span class="font-semibold text-[--accent-bg]">state management</span> with Zustand.</li>
-                <li>Gain experience deploying professional-grade web apps.</li>
+             <ul class="list-disc list-inside text-gray-700">
+                <li class="list-item text-lg">Understand and implement <span class="font-semibold text-[--accent-bg]">real-time communication</span> using Socket.io.</li>
+                <li class="list-item text-lg">Learn how to <span class="font-semibold text-[--accent-bg]">secure applications</span> with JWT-based authentication.</li>
+                <li class="list-item text-lg">Build scalable apps using the MERN stack.</li>
+                 <li class="list-item text-lg">Explore effective <span class="font-semibold text-[--accent-bg]">state management</span> with Zustand.</li>
+                <li class="list-item text-lg">Gain experience deploying professional-grade web apps.</li>
             </ul>
         </section>
 
         <!-- Conclusion Section -->
-         <section class="bg-white rounded-lg p-8 mb-8 shadow animate-fade-in glossy-card" data-animation="card">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6"><i class="fas fa-flag-checkered text-[--accent-bg] mr-2"></i>Conclusion</h2>
-            <div class="flex flex-col gap-4 text-gray-700">
-                 <p>This project is designed to demonstrate advanced <span class="font-semibold text-[--accent-bg]">full-stack development skills</span>.</p>
-                <p>It tackles <span class="font-semibold text-[--accent-bg]">real-world challenges</span> like real-time communication and secure authentication.</p>
-                 <p>By completing it, the team will have gained hands-on experience in building <span class="font-semibold text-[--accent-bg]">scalable, professional-grade applications</span>.</p>
+        <section class="bg-white rounded-lg p-10 mb-10 shadow glossy-card slide-in" data-animation="card">
+           <h2 class="text-3xl font-semibold text-gray-800 mb-8 section-heading"><i class="fas fa-flag-checkered text-[--accent-bg] mr-2"></i>Conclusion</h2>
+           <div class="flex flex-col gap-6 text-gray-700">
+                <p class="text-lg">This project is designed to demonstrate advanced <span class="font-semibold text-[--accent-bg]">full-stack development skills</span>.</p>
+                <p class="text-lg">It tackles <span class="font-semibold text-[--accent-bg]">real-world challenges</span> like real-time communication and secure authentication.</p>
+                <p class="text-lg">By completing it, the team will have gained hands-on experience in building <span class="font-semibold text-[--accent-bg]">scalable, professional-grade applications</span>.</p>
            </div>
         </section>
     </div>
+     <script>
+         document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.slide-in');
 
-   <script>
-       document.addEventListener('DOMContentLoaded', () => {
-          const cards = document.querySelectorAll('[data-animation="card"]');
-
-
-            cards.forEach(card => {
-             card.addEventListener('mouseenter', () => {
-                     animateCard(card, 'in');
+           const observer = new IntersectionObserver((entries, observer) => {
+              entries.forEach(entry => {
+                 if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                      observer.unobserve(entry.target);
+                     }
+                   });
+               }, {
+                   threshold: 0.1, // Adjust threshold as needed
              });
 
-                card.addEventListener('mouseleave', () => {
-                    animateCard(card, 'out');
-                });
-
-                card.addEventListener('focus', () => {
-                      animateCard(card, 'in');
-
-                   });
-                 card.addEventListener('blur', () => {
-                    animateCard(card, 'out');
-               });
-            });
-
-        function animateCard(card, direction) {
-            const scale = direction === 'in' ? '1.03' : '1';
-            const shadowIn = '12px 12px 25px var(--glossy-shadow), -12px -12px 25px var(--glossy-light)';
-            const shadowOut = '10px 10px 20px var(--glossy-shadow), -10px -10px 20px var(--glossy-light)';
-
-             card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-
-            card.style.transform = `scale(${scale})`;
-             card.style.boxShadow = direction === 'in' ? shadowIn:shadowOut;
-            }
-
-    });
+             sections.forEach(section => {
+                   observer.observe(section);
+             });
+         });
     </script>
-
 </body>
 </html>
