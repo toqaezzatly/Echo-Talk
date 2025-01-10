@@ -1,16 +1,16 @@
 # Echo-Talk
 
-   Echo-Talk is a platform for real-time communication with a backend powered by Node.js, MongoDB for database management, and a frontend built using ReactJS with TailwindCSS.
+- Echo-Talk is a platform for real-time communication with a backend powered by Node.js, MongoDB for database management, and a frontend built using ReactJS with TailwindCSS.
 
 ## Getting Started
 
-   Follow the steps below to set up and run the project locally on your device.
+- Follow the steps below to set up and run the project locally on your device.
 
 ---
 
 ### Prerequisites
 
-   Ensure you have the following installed on your system:
+- Ensure you have the following installed on your system:
 
 - **Node.js** (LTS version recommended)
 - **npm** (comes with Node.js) or **yarn** (optional)
@@ -24,15 +24,13 @@
 1. **Clone the Repository**
 
    ```
-   bash
    git clone https://github.com/toqaezzatly/Echo-Talk.git
    cd Echo-Talk
    ```
 
 2. **Install Backend Dependencies**
-   Navigate to the backend directory and install dependencies:
+- Navigate to the backend directory and install dependencies:
    ```
-   bash
    cd backend
    npm install
    ```
@@ -45,23 +43,20 @@
 
 4. **Frontend Setup**
 
-- Navigate to the Frontend Directory
+- In a new terminal Navigate to the Frontend Directory
    ```
-   bash
-   cd ../frontend
+   cd frontend
    ```
 
 5. **Install Frontend Dependencies**
 
    ```
-   bash
    npm install
    ```
 
 6. **Accessing the Application**
 
    ```
-   bash
    npm start
    ```
 
