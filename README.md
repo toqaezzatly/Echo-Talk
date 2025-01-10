@@ -2,11 +2,13 @@
 
 - Echo-Talk is a platform for real-time communication with a backend powered by Node.js, MongoDB for database management, and a frontend built using ReactJS with TailwindCSS.
 
+---
+
 ## Getting Started
 
 - Follow the steps below to set up and run the project locally on your device.
 
----
+--
 
 ### Prerequisites
 
@@ -17,7 +19,7 @@
 - **MongoDB** (installed locally or a connection string for a remote MongoDB instance)
 - **Git** (to clone the repository)
 
----
+--
 
 ### Installation Steps
 
@@ -38,8 +40,6 @@
 3. **Set Up Environment Variables for Backend**
 
 - Copy the .env.example to make a new .env file, with its real values.
-
-
 
 4. **Frontend Setup**
 
@@ -62,6 +62,8 @@
 
 - Open your browser and go to http://localhost:3000 to access the Echo-Talk application.
 - Ensure that both the backend and frontend servers are running.
+
+---
 
 ## Troubleshooting
 
