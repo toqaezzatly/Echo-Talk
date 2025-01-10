@@ -8,18 +8,14 @@
 
 - Follow the steps below to set up and run the project locally on your device.
 
---
-
 ### Prerequisites
 
 - Ensure you have the following installed on your system:
 
 - **Node.js** (LTS version recommended)
-- **npm** (comes with Node.js) or **yarn** (optional)
+- **npm** (comes with Node.js).
 - **MongoDB** (installed locally or a connection string for a remote MongoDB instance)
 - **Git** (to clone the repository)
-
---
 
 ### Installation Steps
 
