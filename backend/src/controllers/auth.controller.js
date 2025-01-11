@@ -2,6 +2,9 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
+import validator from 'validator';
+
+
 
 export const signup = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -10,9 +13,21 @@ export const signup = async (req, res) => {
         return res.status(400).json({ message: "All fields are required" });
         }
 
-        if (password.length < 6) {
-        return res.status(400).json({ message: "Password must be at least 6 characters" });
+
+        if (!validator.isStrongPassword(password,
+            {
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1,
+            }
+        )) {
+        return res.status(400).json({ message: "Password is not strong enough, it must have at least 8 characters, 1 lowercase, 1 uppercase, 1 number and 1 symbol" });
         }
+
+       
+        
 
         const user = await User.findOne({ email });
 

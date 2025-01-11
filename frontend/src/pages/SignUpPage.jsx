@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
-
 import AuthImagePattern from "../components/AuthImagePattern";
-import {toast, Toaster} from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,29 +14,51 @@ const SignUpPage = () => {
     confirmPassword: "",
   });
 
-  const { signup, isSigningUp } = useAuthStore();
+  const [passwordStrength, setPasswordStrength] = useState(0);
+    const [passwordError, setPasswordError] = useState(null);
 
-  const getPasswordStrength = (password) => {
-    let strength = 0;
-    if (password.length >= 6) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/\d/.test(password)) strength++;
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
-    return strength;
-  };
+  const { signup, isSigningUp } = useAuthStore();
 
   const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
     if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
     if (!formData.password) return toast.error("Password is required");
-    if (formData.password.length < 6) return toast.error("Password must be at least 6 characters");
+      if(passwordError) return toast.error(passwordError);
     if (formData.password !== formData.confirmPassword)
       return toast.error("Passwords do not match");
 
     return true;
   };
+
+    const checkPasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+
+    setPasswordStrength(strength);
+        if (strength < 5) {
+          let errorMessage = "Password is not strong enough: ";
+          if (password.length < 8) errorMessage += "At least 8 characters. ";
+          if (!/[A-Z]/.test(password)) errorMessage += "At least 1 uppercase. ";
+          if (!/[a-z]/.test(password)) errorMessage += "At least 1 lowercase. ";
+          if (!/\d/.test(password)) errorMessage += "At least 1 number. ";
+          if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) errorMessage += "At least 1 symbol.";
+
+            setPasswordError(errorMessage);
+        }else{
+          setPasswordError(null)
+        }
+  };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setFormData({ ...formData, password: newPassword });
+        checkPasswordStrength(newPassword);
+    }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,7 +68,6 @@ const SignUpPage = () => {
     if (success === true) signup(formData);
   };
 
-  const passwordStrength = getPasswordStrength(formData.password);
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
@@ -115,11 +135,11 @@ const SignUpPage = () => {
                   <Lock className="size-5 text-base-content/40" />
                 </div>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10`}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    type={showPassword ? "text" : "password"}
+                    className={`input input-bordered w-full pl-10`}
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={handlePasswordChange}
                 />
                 <button
                   type="button"
@@ -133,17 +153,19 @@ const SignUpPage = () => {
                   )}
                 </button>
               </div>
-              {/* Password Strength Bar */}
-              <div className="flex mt-2 space-x-1">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className={`h-2 flex-1 rounded ${
-                      passwordStrength > index ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                  ></div>
-                ))}
-              </div>
+                {/* Password Strength Bar */}
+                <div className="flex mt-2 space-x-1">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                      <div
+                          key={index}
+                          className={`h-2 flex-1 rounded ${
+                              passwordStrength > index ? "bg-green-500" : "bg-gray-300"
+                          }`}
+                      ></div>
+                  ))}
+                </div>
+                {passwordError && <p className="text-red-500">{passwordError}</p>}
+
             </div>
 
             <div className="form-control">

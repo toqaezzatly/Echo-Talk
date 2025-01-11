@@ -12,3 +12,5 @@ backend/.env
 
 # Ignore the build folder in the frontend directory
 frontend/build
+
+# Ignore minpmap file 
