@@ -127,7 +127,7 @@ const MessageInput = () => {
                 </svg>
               </button>
            </div>
-           <div ref={emojiPickerRef} className="absolute bottom-16 left-0 bg-white rounded-md shadow-md z-10">
+           <div ref={emojiPickerRef} className="absolute bottom-16 left-0 bg-white rounded- shadow-md z-10">
                 {showEmojiPicker && (
                   <EmojiPicker onEmojiClick={handleEmojiClick} />
                  )}
@@ -138,7 +138,7 @@ const MessageInput = () => {
           className="btn btn-sm btn-circle"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          <Send size={23} />
         </button>
       </form>
     </div>

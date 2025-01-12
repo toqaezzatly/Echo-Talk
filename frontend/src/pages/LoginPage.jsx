@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
+import Axios from "axios";
 import AuthImagePattern from "../components/AuthImagePattern";
-import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 
 const LoginPage = () => {
@@ -11,11 +12,46 @@ const LoginPage = () => {
     password: "",
   });
   const { login, isLoggingIn } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
+    try {
+      await login(formData);
+      checkAuthentication(); // Verify authentication after login
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
+
+  const checkAuthentication = async () => {
+    try {
+      const response = await Axios.get("/api/auth/check", {
+        headers: {
+          "x-access-token": localStorage.getItem("jwt"),
+        },
+      });
+      console.log("Auth Check Response:", response.data);
+      if (response.data.loggedIn) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Auth check error:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Check authentication status when the component mounts
+    checkAuthentication();
+  }, []);
 
   return (
     <div className="h-screen grid lg:grid-cols-2">
@@ -48,10 +84,12 @@ const LoginPage = () => {
                 </div>
                 <input
                   type="email"
-                  className={`input input-bordered w-full pl-10`}
+                  name="email"
+                  className="input input-bordered w-full pl-10"
                   placeholder="you@example.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -66,10 +104,12 @@ const LoginPage = () => {
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10`}
+                  name="password"
+                  className="input input-bordered w-full pl-10"
                   placeholder="••••••••"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={handleInputChange}
+                  required
                 />
                 <button
                   type="button"
@@ -88,7 +128,7 @@ const LoginPage = () => {
             <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
               {isLoggingIn ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
                   Loading...
                 </>
               ) : (
@@ -110,10 +150,11 @@ const LoginPage = () => {
 
       {/* Right Side - Image/Pattern */}
       <AuthImagePattern
-        title={"Welcome back!"}
-        subtitle={"Sign in to continue your conversations and catch up with your messages."}
+        title="Welcome back!"
+        subtitle="Sign in to continue your conversations and catch up with your messages."
       />
     </div>
   );
 };
+
 export default LoginPage;
