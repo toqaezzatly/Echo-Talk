@@ -62,18 +62,18 @@ A chat application enabling users to send and receive messages, focusing on a st
 
 ### Setup Instructions
 1. Create a `.env` file:
-   ```plaintext
+    ```plaintext
     PORT=...
     MONGO_DB_URI=...
     JWT_SECRET=...
     NODE_ENV=...
     ```
 2. Build the app:
- ```bash
+   ```bash
   npm run build
-  ```
+   ```
   3. Start the app:
-  ```bash
+    ```bash
     npm start
     ```
 
