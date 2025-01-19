@@ -3,9 +3,10 @@
 ## **Project Name:** Echo Chat App
 
 ## **Team Members**
-- Member 1
-- Member 2
-- Member 3
+-  Toka Ayman Email: toqaezzatly@gmail.com
+-  Sara Alsayd Email: loaa2442@gmail.com
+- Hader Abdelhakem Email: hadeelkaddy86@gmail.com
+- Heba Mamdooh  Email: hebamamdooh55@gmail.com
 
 ## **Project Description**
 A chat application enabling users to send and receive messages, focusing on a straightforward communication process without real-time synchronization. 
@@ -45,9 +46,9 @@ A chat application enabling users to send and receive messages, focusing on a st
    - Ensuring messages are stored and displayed correctly.
    2. **User Authentication**:
       - Safeguarding user data with JWT while preventing token misuse.
-      3. **State Management**:
+    3. **State Management**:
          - Optimizing performance for handling application states.
-         4. **Error Handling**:
+    4. **Error Handling**:
             - Effectively managing errors on both the client and server sides.
 
             ---
