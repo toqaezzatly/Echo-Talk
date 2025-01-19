@@ -18,8 +18,21 @@ const userSchema = new mongoose.Schema({
     },
     profilePic: {
         type: String,
-         //Removed the default value from the schema
-    }}, {
+    },
+    status: {
+        type: String,
+        default: "Hey. I am using Echo-Talk!",
+    },
+    phone: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    website: {
+        type: String,
+    }
+}, {
     timestamps: true,
 });
 

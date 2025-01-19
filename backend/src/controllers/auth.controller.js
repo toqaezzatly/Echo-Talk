@@ -4,8 +4,6 @@ import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 import validator from 'validator';
 
-
-
 export const signup = async (req, res) => {
     const { fullName, email, password } = req.body;
     try {
@@ -26,9 +24,6 @@ export const signup = async (req, res) => {
         return res.status(400).json({ message: "Password is not strong enough, it must have at least 8 characters, 1 lowercase, 1 uppercase, 1 number and 1 symbol" });
         }
 
-       
-        
-
         const user = await User.findOne({ email });
 
         if (user) return res.status(400).json({ message: "Email already exists" });
@@ -40,23 +35,26 @@ export const signup = async (req, res) => {
         fullName,
         email,
         password: hashedPassword,
-        profilePic: "/avatar.png", // Set the default profile picture
+        profilePic: "/avatar.png",
         });
 
         if (newUser) {
-        generateToken(newUser._id, res);
-        await newUser.save();
-         const user = await User.findById(newUser._id)
-
-         res.status(201).json({
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            profilePic: user.profilePic,
-            createdAt: user.createdAt
-         });
+            generateToken(newUser._id, res);
+            await newUser.save();
+            const user = await User.findById(newUser._id);
+             res.status(201).json({
+                _id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+                profilePic: user.profilePic,
+                status: user.status,
+                phone: user.phone,
+                location: user.location,
+                website: user.website,
+                createdAt: user.createdAt,
+            });
         } else {
-        res.status(400).json({ message: "Invalid user data" });
+            res.status(400).json({ message: "Invalid user data" });
         }
     } catch (error) {
         console.log("Error in signup controller", error.message);
@@ -79,14 +77,18 @@ export const login = async (req, res) => {
     }
 
     generateToken(user._id, res);
-    const userFromDB = await User.findById(user._id)
+    const userFromDB = await User.findById(user._id);
 
     res.status(200).json({
-      _id: userFromDB._id,
-      fullName: userFromDB.fullName,
-      email: userFromDB.email,
-      profilePic: userFromDB.profilePic,
-      createdAt: userFromDB.createdAt,
+        _id: userFromDB._id,
+        fullName: userFromDB.fullName,
+        email: userFromDB.email,
+        profilePic: userFromDB.profilePic,
+        status: userFromDB.status,
+        phone: userFromDB.phone,
+        location: userFromDB.location,
+        website: userFromDB.website,
+        createdAt: userFromDB.createdAt,
     });
   } catch (error) {
     console.log("Error in login controller", error.message);
@@ -104,40 +106,65 @@ export const logout = (req, res) => {
   }
 };
 
+
 export const updateProfile = async (req, res) => {
     try {
-      const { profilePic } = req.body;
-     const userId = req.user._id;
+        const userId = req.user._id;
 
-    
+        const { fullName, profilePic, status, phone, location, website } = req.body;
 
-   if (!profilePic) {
-         return res.status(400).json({ message: "Profile pic is required" });
-   }
-        const uploadResponse = await cloudinary.uploader.upload(profilePic);
-       
+        const user = await User.findById(userId);
+         if(!user){
+          return res.status(404).json({error: "User not found"});
+        }
 
-       await User.findByIdAndUpdate(
-             userId,
-          { profilePic: uploadResponse.secure_url }
-      );
 
-    const user = await User.findById(userId);
+        const updates = {};
 
-   res.status(200).json({
-          _id: user._id,
-           fullName: user.fullName,
-          email: user.email,
-        profilePic: user.profilePic,
-        createdAt: user.createdAt,
-   });
+        if (fullName) updates.fullName = fullName;
+         if (status) updates.status = status;
+        if (phone) updates.phone = phone;
+        if (location) updates.location = location;
+        if (website) updates.website = website;
 
-  } catch (error) {
-      console.log("error in update profile:", error);
-       console.log("Full error:", error); // Log the full error object
-        res.status(500).json({ message: "Internal server error" });
-     }
-   };
+
+        if (profilePic) {
+
+             try {
+               const uploadResponse = await cloudinary.uploader.upload(profilePic);
+                updates.profilePic = uploadResponse.secure_url;
+
+               } catch(uploadError) {
+                    console.error("Error during upload to cloudinary:", uploadError)
+                    return res.status(500).json({ message: "Error uploading profile picture", error: uploadError.message });
+                 }
+
+            }
+
+        const updatedUser =  await User.findByIdAndUpdate(userId,  updates, { new: true });
+
+        if(!updatedUser){
+             return res.status(404).json({ error: "User not found" });
+        }
+
+
+        res.status(200).json({
+             _id: updatedUser._id,
+            fullName: updatedUser.fullName,
+            email: updatedUser.email,
+            profilePic: updatedUser.profilePic,
+            status: updatedUser.status,
+            phone: updatedUser.phone,
+            location: updatedUser.location,
+            website: updatedUser.website,
+            createdAt: updatedUser.createdAt,
+        });
+
+    } catch (error) {
+        console.error("Error updating profile:", error);
+          res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
 
 
 
@@ -149,6 +176,10 @@ export const checkAuth = async (req, res) => {
       fullName: user.fullName,
       email: user.email,
       profilePic: user.profilePic,
+      status: user.status,
+      phone: user.phone,
+      location: user.location,
+      website: user.website,
       createdAt: user.createdAt,
     });
   } catch (error) {
