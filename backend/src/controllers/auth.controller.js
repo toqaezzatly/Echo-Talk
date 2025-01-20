@@ -112,6 +112,8 @@ export const updateProfile = async (req, res) => {
         const userId = req.user._id;
 
         const { fullName, profilePic, status, phone, location, website } = req.body;
+        console.log("updateProfile called with:", req.body)
+
 
         const user = await User.findById(userId);
          if(!user){
@@ -123,9 +125,12 @@ export const updateProfile = async (req, res) => {
 
         if (fullName) updates.fullName = fullName;
          if (status) updates.status = status;
-        if (phone) updates.phone = phone;
-        if (location) updates.location = location;
-        if (website) updates.website = website;
+
+       // Explicitly set empty string if value is empty.
+       updates.phone = phone === "" ? "" : phone;
+        updates.location = location === "" ? "" : location;
+      updates.website = website === "" ? "" : website;
+
 
 
         if (profilePic) {
@@ -146,6 +151,7 @@ export const updateProfile = async (req, res) => {
         if(!updatedUser){
              return res.status(404).json({ error: "User not found" });
         }
+           console.log("updateProfile updated user:", updatedUser)
 
 
         res.status(200).json({
@@ -154,9 +160,9 @@ export const updateProfile = async (req, res) => {
             email: updatedUser.email,
             profilePic: updatedUser.profilePic,
             status: updatedUser.status,
-            phone: updatedUser.phone,
+             phone: updatedUser.phone,
             location: updatedUser.location,
-            website: updatedUser.website,
+             website: updatedUser.website,
             createdAt: updatedUser.createdAt,
         });
 
@@ -170,16 +176,17 @@ export const updateProfile = async (req, res) => {
 
 export const checkAuth = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+     const user = await User.findById(req.user._id);
+
     res.status(200).json({
-      _id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      profilePic: user.profilePic,
-      status: user.status,
-      phone: user.phone,
-      location: user.location,
-      website: user.website,
+       _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+       profilePic: user.profilePic,
+       status: user.status,
+        phone: user.phone,
+       location: user.location,
+        website: user.website,
       createdAt: user.createdAt,
     });
   } catch (error) {

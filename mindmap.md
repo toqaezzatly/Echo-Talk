@@ -5,6 +5,7 @@
     - controllers
       - auth.controller.js
       - message.controller.js
+      - user.controller.js
     - lib
       - cloudinary.js
       - db.js
@@ -18,6 +19,7 @@
     - routes
       - auth.route.js
       - message.route.js
+      - user.route.js
     - index.js
   - .env
   - package-lock.json
@@ -40,6 +42,7 @@
       - MessageInput.jsx
       - Navbar.jsx
       - NoChatSelected.jsx
+      - OtherUserProfile.jsx
       - Sidebar.jsx
     - constants
       - index.js
@@ -70,6 +73,7 @@
   - vite.config.js
 - .gitignore
 - index.html
+- mindmap.md
 - pitch-1.html
 - pitch.html
 - Print-MindMap.ps1

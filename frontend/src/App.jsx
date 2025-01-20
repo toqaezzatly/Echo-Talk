@@ -1,4 +1,5 @@
 import Navbar from "./components/Navbar";
+import OtherUserProfile from "./components/OtherUserProfile";
 
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route path="/profile/:userId" element={authUser ? <OtherUserProfile /> : <Navigate to="/login" />} />
       </Routes>
 
       <Toaster />

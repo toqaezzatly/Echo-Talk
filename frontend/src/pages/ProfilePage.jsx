@@ -6,21 +6,23 @@ const ProfilePage = () => {
     const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
     const [selectedImg, setSelectedImg] = useState(null);
     const [error, setError] = useState(null);
-    const [statusText, setStatusText] = useState(authUser?.status || "Hey. I am using Echo-Talk!");
+    const [statusText, setStatusText] = useState("");
     const [isEditingStatus, setIsEditingStatus] = useState(false);
-    const [phone, setPhone] = useState(authUser?.phone || "");
-    const [location, setLocation] = useState(authUser?.location || "");
-    const [website, setWebsite] = useState(authUser?.website || "");
+    const [phoneInput, setPhoneInput] = useState("");
+    const [locationInput, setLocationInput] = useState("");
+     const [websiteInput, setWebsiteInput] = useState("");
     const [isEditingContact, setIsEditingContact] = useState(false);
 
-    useEffect(() => {
-        setStatusText(authUser?.status || "Hey. I am using Echo-Talk!");
-        setPhone(authUser?.phone || "");
-        setLocation(authUser?.location || "");
-        setWebsite(authUser?.website || "");
+     useEffect(() => {
+         if (authUser) {
+            console.log("useEffect authUser changed:", authUser)
+            setStatusText(authUser?.status || "Hey. I am using Echo-Talk!");
+              setPhoneInput(authUser?.phone || "");
+             setLocationInput(authUser?.location || "");
+             setWebsiteInput(authUser?.website || "");
 
+        }
     }, [authUser]);
-
 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
@@ -47,7 +49,8 @@ const ProfilePage = () => {
     };
 
     const handleSaveStatus = async () => {
-        await updateProfile({ status: statusText });
+        const statusToSave = statusText.trim() === "" ? "Hey. I am using Echo-Talk!" : statusText;
+        await updateProfile({ status: statusToSave });
         setIsEditingStatus(false);
     };
 
@@ -57,35 +60,44 @@ const ProfilePage = () => {
 
     const handleCancelStatusEdit = () => {
         setIsEditingStatus(false);
-        setStatusText(authUser?.status || "Hey. I am using Echo-Talk!");
+       setStatusText(authUser?.status || "Hey. I am using Echo-Talk!");
     };
 
     const handleEditContact = () => {
         setIsEditingContact(true);
     };
 
-    const handleCancelContactEdit = () => {
-        setIsEditingContact(false);
-        setPhone(authUser?.phone || "");
-        setLocation(authUser?.location || "");
-        setWebsite(authUser?.website || "");
+      const handleCancelContactEdit = () => {
+          setIsEditingContact(false);
+            setPhoneInput(authUser?.phone || "");
+             setLocationInput(authUser?.location || "");
+             setWebsiteInput(authUser?.website || "");
+        
+             
 
     };
+
+
     const handleSaveContact = async () => {
-        await updateProfile({ phone, location, website });
-        setIsEditingContact(false);
-    };
+      await updateProfile({
+          phone: phoneInput.trim(), // Save trimmed value (empty string remains empty)
+          location: locationInput.trim(),
+          website: websiteInput.trim(),
+      });
+      setIsEditingContact(false);
+  };
+  
 
     const handlePhoneChange = (e) => {
-        setPhone(e.target.value);
+        setPhoneInput(e.target.value);
     };
 
     const handleLocationChange = (e) => {
-        setLocation(e.target.value);
+        setLocationInput(e.target.value);
     };
 
     const handleWebsiteChange = (e) => {
-        setWebsite(e.target.value);
+        setWebsiteInput(e.target.value);
     };
 
 
@@ -192,17 +204,17 @@ const ProfilePage = () => {
                                 <div className="flex items-center gap-3 text-sm py-2 border-b border-base-300">
                                     <Phone className="w-4 h-4 text-gray-400" />
                                     <span className="text-gray-700">Phone Number</span>
-                                    <span className="ml-auto text-gray-500">{phone || "N/A"}</span>
+                                    <span className="ml-auto text-gray-500">{phoneInput || "N/A"}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm py-2 border-b border-base-300">
                                     <MapPin className="w-4 h-4 text-gray-400" />
                                     <span className="text-gray-700">Location</span>
-                                    <span className="ml-auto text-gray-500">{location || "N/A"}</span>
+                                    <span className="ml-auto text-gray-500">{locationInput || "N/A"}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm py-2">
                                     <Link className="w-4 h-4 text-gray-400" />
                                     <span className="text-gray-700">Website</span>
-                                    <span className="ml-auto text-gray-500">{website || "N/A"}</span>
+                                    <span className="ml-auto text-gray-500">{websiteInput || "N/A"}</span>
                                 </div>
 
                         </div>
@@ -212,7 +224,7 @@ const ProfilePage = () => {
                                   <Phone className="w-4 h-4 text-gray-400" />
                                     <input
                                         type="text"
-                                        value={phone}
+                                        value={phoneInput}
                                         onChange={handlePhoneChange}
                                         placeholder="Phone Number"
                                         className="text-sm bg-base-300 rounded-lg px-2 py-1 focus:outline-none w-full"
@@ -223,7 +235,7 @@ const ProfilePage = () => {
                                    <MapPin className="w-4 h-4 text-gray-400" />
                                     <input
                                         type="text"
-                                        value={location}
+                                        value={locationInput}
                                         onChange={handleLocationChange}
                                         placeholder="Location"
                                         className="text-sm bg-base-300 rounded-lg px-2 py-1 focus:outline-none w-full"
@@ -234,7 +246,7 @@ const ProfilePage = () => {
                                     <Link className="w-4 h-4 text-gray-400" />
                                     <input
                                         type="text"
-                                        value={website}
+                                        value={websiteInput}
                                         onChange={handleWebsiteChange}
                                         placeholder="Website"
                                         className="text-sm bg-base-300 rounded-lg px-2 py-1 focus:outline-none w-full"
