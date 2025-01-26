@@ -9,6 +9,7 @@
     - lib
       - cloudinary.js
       - db.js
+      - email.js
       - socket.js
       - utils.js
     - middleware
@@ -20,6 +21,7 @@
       - auth.route.js
       - message.route.js
       - user.route.js
+    - deleteUsers.js
     - index.js
   - .env
   - package-lock.json
@@ -50,11 +52,14 @@
       - axios.js
       - utils.js
     - pages
+      - ForgotPasswordPage.jsx
       - HomePage.jsx
       - LoginPage.jsx
       - ProfilePage.jsx
+      - ResetPasswordPage.jsx
       - SettingsPage.jsx
       - SignUpPage.jsx
+      - VerificationPage.jsx
     - store
       - useAuthStore.js
       - useChatStore.js

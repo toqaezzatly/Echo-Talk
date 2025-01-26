@@ -1,41 +1,64 @@
-import Jwt from "jsonwebtoken";
+// middleware/auth.middleware.js
+import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import crypto from "crypto";
 
 export const protectRoute = async (req, res, next) => {
     try {
-        // Get the token from cookies
-        const token = req.cookies.jwt;
-        if (!token) {
-            return res.status(401).json({ message: "Unauthorized - No token provided" });
+    const token = req.cookies.jwt;
+        if(!token){
+        return res.status(401).json({message:"Unauthorized"})
         }
 
-        // Verify and decode the token
-        const decoded = Jwt.verify(token, process.env.JWT_SECRET);
-        
-        // Fetch user by decoded userId
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        if (!decoded) {
+        return res.status(401).json({message:"Unauthorized, Invalid token"});
+        }
+
         const user = await User.findById(decoded.userId).select("-password");
+
         if (!user) {
-            return res.status(401).json({ message: "Unauthorized - User not found" });
+        return res.status(404).json({ message: "User not found" });
+        }
+    req.user = user;
+    next();
+
+} catch(error) {
+    console.log("Error in protectRoute middleware", error.message)
+    res.status(500).json({message: "Internal Server Error"})
+}
+};
+
+
+// backend/src/middleware/auth.middleware.js
+export const verifyPasswordResetToken = async (req, res, next) => {
+    try {
+        const { token } = req.body;
+        
+        if (!token) {
+            return res.status(400).json({ message: "Missing reset token" });
         }
 
-        // Attach the user object to the request for further use
+        // Hash the token
+        const hashedToken = crypto.createHash('sha256')
+                                .update(token)
+                                .digest('hex');
+
+        const user = await User.findOne({
+            resetPasswordToken: hashedToken,
+            resetPasswordExpiresAt: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid or expired token" });
+        }
+
         req.user = user;
         next();
 
     } catch (error) {
-        console.error("Error in auth middleware:", error);
-
-        // Handle specific JWT errors
-        if (error.name === 'JsonWebTokenError') {
-            return res.status(401).json({ message: "Unauthorized - Invalid token" });
-        }
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({ message: "Unauthorized - Token expired" });
-        }
-
-        // Catch any other errors
-        return res.status(500).json({ message: "Internal server error" });
+        console.error("Token verification error:", error);
+        res.status(500).json({ message: "Token verification failed" });
     }
 };
-
-export default protectRoute;

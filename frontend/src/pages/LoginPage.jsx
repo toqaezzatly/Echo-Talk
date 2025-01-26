@@ -1,160 +1,169 @@
-import React, { useState, useEffect } from "react";
+// LoginPage.jsx
+import React, { useState, useEffect } from "react"; //Import useEffect
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import Axios from "axios";
 import AuthImagePattern from "../components/AuthImagePattern";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { toast } from "react-hot-toast";
+import Cookies from 'js-cookie'; // Import Cookies
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const { login, isLoggingIn } = useAuthStore();
-  const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
+    const { login, isLoggingIn, authUser } = useAuthStore();
+    const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(formData);
-      checkAuthentication(); // Verify authentication after login
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await login(formData);  //Call login action
 
-  const checkAuthentication = async () => {
-    try {
-      const response = await Axios.get("/api/auth/check", {
-        headers: {
-          "x-access-token": localStorage.getItem("jwt"),
-        },
-      });
-      console.log("Auth Check Response:", response.data);
-      if (response.data.loggedIn) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Auth check error:", error);
-    }
-  };
+        } catch (error) {
+             console.error("Login error:", error);
+             toast.error(error?.message || "Login Failed");
+        }
+    };
 
-  useEffect(() => {
-    // Check authentication status when the component mounts
-    checkAuthentication();
-  }, []);
+    useEffect(() => {
+        if (authUser) {
+            Cookies.set('jwt', generateToken()); // save JWT in cookie
+            navigate('/');
+        }
+    }, [authUser, navigate]);
 
-  return (
-    <div className="h-screen grid lg:grid-cols-2">
-      {/* Left Side - Form */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <div
-                className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20
-              transition-colors"
-              >
-                <MessageSquare className="w-6 h-6 text-primary" />
-              </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-base-content/60">Sign in to your account</p>
-            </div>
-          </div>
+     // Function to generate a dummy JWT token
+    const generateToken = () => {
+        const payload = {
+            userId: authUser?._id,
+            email: authUser?.email,
+            // Add any other relevant user information
+        };
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-base-content/40" />
+        const token = btoa(JSON.stringify(payload));  //Basic implementatiom encode.
+
+        return token;
+
+    };
+
+    return (
+        <div className="h-screen grid lg:grid-cols-2">
+            {/* Left Side - Form */}
+            <div className="flex flex-col justify-center items-center p-6 sm:p-12">
+                <div className="w-full max-w-md space-y-8">
+                    {/* Logo */}
+                    <div className="text-center mb-8">
+                        <div className="flex flex-col items-center gap-2 group">
+                            <div
+                                className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20
+                                transition-colors"
+                            >
+                                <MessageSquare className="w-6 h-6 text-primary" />
+                            </div>
+                            <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
+                            <p className="text-base-content/60">Sign in to your account</p>
+                        </div>
+                    </div>
+
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text font-medium">Email</span>
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Mail className="h-5 w-5 text-base-content/40" />
+                                </div>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    className="input input-bordered w-full pl-10"
+                                    placeholder="you@example.com"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text font-medium">Password</span>
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-base-content/40" />
+                                </div>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    className="input input-bordered w-full pl-10"
+                                    placeholder="••••••••"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="h-5 w-5 text-base-content/40" />
+                                    ) : (
+                                        <Eye className="h-5 w-5 text-base-content/40" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                         <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
+                            {isLoggingIn ? (
+                                <>
+                                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                                    Loading...
+                                </>
+                            ) : (
+                                "Sign in"
+                            )}
+                        </button>
+                    </form>
+
+                      <div className="text-center mt-2">
+                        <Link to="/forgot-password" className="link link-primary">
+                           Forgot password?
+                         </Link>
+                      </div>
+
+                    <div className="text-center">
+                        <p className="text-base-content/60">
+                            Don't have an account?{" "}
+                            <Link to="/signup" className="link link-primary">
+                                Create account
+                            </Link>
+                        </p>
+                    </div>
                 </div>
-                <input
-                  type="email"
-                  name="email"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
             </div>
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-base-content/40" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
-              {isLoggingIn ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                  Loading...
-                </>
-              ) : (
-                "Sign in"
-              )}
-            </button>
-          </form>
-
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Don&apos;t have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Create account
-              </Link>
-            </p>
-          </div>
+            {/* Right Side - Image/Pattern */}
+            <AuthImagePattern
+                title="Welcome back!"
+                subtitle="Sign in to continue your conversations and catch up with your messages."
+            />
         </div>
-      </div>
-
-      {/* Right Side - Image/Pattern */}
-      <AuthImagePattern
-        title="Welcome back!"
-        subtitle="Sign in to continue your conversations and catch up with your messages."
-      />
-    </div>
-  );
+    );
 };
 
 export default LoginPage;
