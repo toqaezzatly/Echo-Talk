@@ -1,5 +1,10 @@
 # Echo-Talk# EchoTalk - Real-Time Communication Platform
 
+![image](https://github.com/user-attachments/assets/27614865-e880-4732-a036-e49cc5950259)
+
+
+
+
 ## Overview
 EchoTalk is a real-time communication platform designed to facilitate seamless and secure messaging between users. Built with modern web technologies, EchoTalk offers a robust and scalable solution for real-time communication needs.
 
